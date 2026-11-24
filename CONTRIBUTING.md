@@ -109,3 +109,35 @@ CI fails if `README.md` is out of date.
 Optional fields: `module` (when the module name differs from the slug) and `neetcode`
 (NeetCode slug, adds a link to its explanation). Solution languages are detected
 automatically from the files that exist.
+
+## Local setup
+
+```bash
+uv sync
+uv run pre-commit install
+```
+
+Hooks run automatically on every commit, in this order: file checks, Ruff (lint and format),
+pytest and the README progress dashboard. Commit messages are validated afterwards. If a hook
+modifies files, review the changes, `git add` them and commit again.
+
+## Pull requests
+
+`main` is protected by the ruleset in `.github/rulesets/protect-main.json`:
+
+- Every change goes through a pull request. Direct pushes, force pushes and deletion are blocked.
+- The `Lint & test (Python)` check must pass and the branch must be up to date with `main`.
+- All commits must be signed.
+- Pull requests are squash-merged. The PR title becomes the commit message, so it must follow
+  the commit conventions above.
+
+Branch names follow `<type>/<short-description>`, e.g. `feat/python-two-sum`.
+
+```bash
+git switch -c feat/python-two-sum
+# solve, test, commit
+git push -u origin HEAD
+gh pr create --fill
+gh pr merge --auto --squash --delete-branch
+git switch main && git pull
+```
