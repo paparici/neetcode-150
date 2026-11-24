@@ -1,0 +1,24 @@
+# Catalog of solved problems. It feeds the progress dashboard in README.md.
+#
+# Add one [[problems]] entry per solved problem, then run:
+#   uv run python scripts/update_readme.py
+#
+# Fields:
+#   id         - LeetCode problem number.
+#   title      - Problem name as shown on LeetCode.
+#   slug       - LeetCode URL slug (https://leetcode.com/problems/<slug>/).
+#   category   - Folder name under python/neetcode/.
+#   difficulty - Easy | Medium | Hard
+#   module     - Optional. Module name if it differs from the slug with dashes
+#                replaced by underscores (e.g. "3sum" -> "three_sum").
+#   neetcode   - Optional. NeetCode slug (https://neetcode.io/problems/<neetcode>).
+#
+# Languages are detected automatically from the solution files that exist.
+
+[[problems]]
+id = 217
+title = "Contains Duplicate"
+slug = "contains-duplicate"
+category = "arrays_hashing"
+difficulty = "Easy"
+neetcode = "duplicate-integer"
