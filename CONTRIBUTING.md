@@ -141,3 +141,9 @@ gh pr create --fill
 gh pr merge --auto --squash --delete-branch
 git switch main && git pull
 ```
+
+## Repository governance
+
+Branch protection, merge strategy, CI and security settings are documented in
+[docs/repository-governance.md](docs/repository-governance.md). Security issues must be reported
+privately as described in [SECURITY.md](.github/SECURITY.md).

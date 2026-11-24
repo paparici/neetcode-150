@@ -71,3 +71,8 @@ uv run pytest
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for commit conventions, project structure and workflow.
+
+## Security
+
+See [SECURITY.md](.github/SECURITY.md) to report a vulnerability, and
+[docs/repository-governance.md](docs/repository-governance.md) for branch protection and security settings.
