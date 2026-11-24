@@ -44,6 +44,7 @@ Requirements: `gh` authenticated as a repository admin, and `jq`.
 | Required approvals: 0 | GitHub does not allow approving your own pull requests; the author reviews the diff before merging |
 | Squash merge only | Each pull request becomes a single commit; the PR title becomes its message |
 | Required status check | `Lint & test (Python)` must pass |
+| Code scanning results | CodeQL must report no errors and no high or critical security alerts |
 | Up-to-date branches | The branch must contain the latest `main` before merging |
 | Resolved conversations | All review comments must be resolved |
 | Signed commits | Every commit on `main` must be signed |
@@ -95,6 +96,7 @@ Local hooks use the tool versions pinned in `uv.lock`, so they always match CI.
 | Dependabot alerts | Enabled |
 | Dependabot security updates | Enabled |
 | Dependabot version updates | Weekly, for GitHub Actions and Python dependencies (`.github/dependabot.yml`) |
+| Code scanning (CodeQL) | Enabled (default setup) for Python and GitHub Actions workflows |
 | Private vulnerability reporting | Enabled (see [SECURITY.md](../.github/SECURITY.md)) |
 
 ## Access and ownership

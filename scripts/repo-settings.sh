@@ -62,6 +62,11 @@ apply() {
   toggle vulnerability-alerts "$(jq -r .security.vulnerability_alerts "$SETTINGS")"
   toggle automated-security-fixes "$(jq -r .security.automated_security_fixes "$SETTINGS")"
   toggle private-vulnerability-reporting "$(jq -r .security.private_vulnerability_reporting "$SETTINGS")"
+  if [[ "$(jq -r .security.code_scanning_default_setup "$SETTINGS")" == "true" ]]; then
+    gh api -X PATCH "$API/code-scanning/default-setup" -f state=configured --silent
+  else
+    gh api -X PATCH "$API/code-scanning/default-setup" -f state=not-configured --silent
+  fi
   pass "updated"
 
   section "Ruleset: $RULESET_NAME"
@@ -111,12 +116,13 @@ verify() {
   fi
 
   section "Security features"
-  local alerts fixes reporting
+  local alerts fixes reporting codeql
   alerts="$(gh api "$API/vulnerability-alerts" --silent 2>/dev/null && echo true || echo false)"
   fixes="$(gh api "$API/automated-security-fixes" --jq .enabled 2>/dev/null || echo false)"
   reporting="$(gh api "$API/private-vulnerability-reporting" --jq .enabled 2>/dev/null || echo false)"
+  codeql="$(gh api "$API/code-scanning/default-setup" --jq '.state == "configured"' 2>/dev/null || echo false)"
   for pair in "vulnerability_alerts:$alerts" "automated_security_fixes:$fixes" \
-    "private_vulnerability_reporting:$reporting"; do
+    "private_vulnerability_reporting:$reporting" "code_scanning_default_setup:$codeql"; do
     key="${pair%%:*}"
     expected="$(jq -r ".security.$key" "$SETTINGS")"
     if [[ "${pair#*:}" == "$expected" ]]; then
