@@ -8,8 +8,12 @@
     "squash_merge_commit_title": "PR_TITLE",
     "squash_merge_commit_message": "PR_BODY",
     "security_and_analysis": {
-      "secret_scanning": { "status": "enabled" },
-      "secret_scanning_push_protection": { "status": "enabled" }
+      "secret_scanning": {
+        "status": "enabled"
+      },
+      "secret_scanning_push_protection": {
+        "status": "enabled"
+      }
     }
   },
   "actions": {
@@ -20,6 +24,7 @@
   "security": {
     "vulnerability_alerts": true,
     "automated_security_fixes": true,
-    "private_vulnerability_reporting": true
+    "private_vulnerability_reporting": true,
+    "code_scanning_default_setup": true
   }
 }
