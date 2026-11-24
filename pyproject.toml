@@ -1,7 +1,7 @@
 [project]
 name = "neetcode-150"
 version = "0.1.0"
-description = "Add your description here"
+description = "My solutions to the NeetCode 150, each with tests"
 readme = "README.md"
 authors = [
     { name = "paparici", email = "107882066+paparici@users.noreply.github.com" }
@@ -24,9 +24,16 @@ dev = [
 
 [tool.ruff]
 line-length = 100
+src = ["python"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
 
 [tool.pytest.ini_options]
-testpaths = ["python"]
+testpaths = ["python/tests"]
+pythonpath = ["python"]
+addopts = ["--import-mode=importlib"]
+
+[tool.uv.build-backend]
+module-name = "neetcode"
+module-root = "python"

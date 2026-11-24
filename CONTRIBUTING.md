@@ -41,7 +41,7 @@ ci: run tests on every push
 
 ## Workflow
 
-1. Add the solution and its tests under `python/<category>/`.
+1. Add the solution under `python/neetcode/<category>/` and its tests under `python/tests/<category>/`.
 2. Run the checks locally:
    ```bash
    uv run ruff check --fix .
@@ -49,3 +49,35 @@ ci: run tests on every push
    uv run pytest
    ```
 3. Commit following the convention above. All commits are signed.
+
+## Project structure
+
+```
+python/
+├── neetcode/                 # Solutions (importable package)
+│   ├── __init__.py
+│   └── <category>/
+│       ├── __init__.py
+│       └── <problem>.py
+└── tests/                    # Tests (mirror the package layout)
+    └── <category>/
+        └── test_<problem>.py
+```
+
+### `__init__.py` rules
+
+| Directory                    | `__init__.py`?        | Why                                              |
+|------------------------------|-----------------------|--------------------------------------------------|
+| `python/neetcode/` and below | **Yes**, every level  | It is a regular package imported by the tests    |
+| `python/tests/` and below    | **No**                | pytest discovers tests (`--import-mode=importlib`) |
+
+- Shared test helpers or fixtures go in a `conftest.py`, never by turning `tests/` into a package.
+
+### Adding a new category
+
+```bash
+mkdir -p python/neetcode/<category> python/tests/<category>
+touch python/neetcode/<category>/__init__.py
+```
+
+Use `snake_case` for category and problem names (e.g. `two_pointers/valid_palindrome.py`).
