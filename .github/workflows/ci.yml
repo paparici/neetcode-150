@@ -29,14 +29,19 @@ jobs:
       - name: Install dependencies
         run: uv sync --locked
 
-      - name: Lint
-        run: uv run ruff check .
+      - name: Cache pre-commit hooks
+        uses: actions/cache@v6.1.0
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
 
-      - name: Check formatting
-        run: uv run ruff format --check .
+      # Same hooks as local commits (file checks, Ruff, README dashboard), so skipping them
+      # locally with `git commit --no-verify` cannot get anything past CI.
+      # pytest runs in its own step below for clearer output.
+      - name: Run pre-commit hooks
+        run: uv run pre-commit run --all-files --show-diff-on-failure
+        env:
+          SKIP: pytest
 
       - name: Run tests
         run: uv run pytest
-
-      - name: Check README progress is up to date
-        run: uv run python scripts/update_readme.py --check

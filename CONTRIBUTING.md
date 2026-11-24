@@ -126,12 +126,14 @@ modifies files, review the changes, `git add` them and commit again.
 `main` is protected by the ruleset in `.github/rulesets/protect-main.json`:
 
 - Every change goes through a pull request. Direct pushes, force pushes and deletion are blocked.
-- The `Lint & test (Python)` check must pass and the branch must be up to date with `main`.
+- The `Lint & test (Python)` and `Conventional PR title` checks must pass, and the branch must be up
+  to date with `main`.
 - All commits must be signed.
 - Pull requests are squash-merged. The PR title becomes the commit message, so it must follow
   the commit conventions above.
 
 Branch names follow `<type>/<short-description>`, e.g. `feat/python-two-sum`.
+See [docs/workflow.md](docs/workflow.md) for the complete step-by-step workflow and troubleshooting.
 
 ```bash
 git switch -c feat/python-two-sum

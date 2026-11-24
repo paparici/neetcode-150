@@ -1,2 +1,21 @@
 [tools]
 python = "3.15"
+
+[task_config]
+includes = [".mise/tasks"]
+
+[tasks.check]
+description = "Run every check: file checks, Ruff, pytest and the README dashboard"
+run = "uv run pre-commit run --all-files"
+
+[tasks.test]
+description = "Run the test suite"
+run = "uv run pytest"
+
+[tasks.dashboard]
+description = "Regenerate the progress dashboard in README.md"
+run = "uv run python scripts/update_readme.py"
+
+[tasks.settings]
+description = "Verify that the GitHub settings match .github/settings and .github/rulesets"
+run = "scripts/repo-settings.sh verify"

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#MISE description="Create a branch from an up-to-date main. Usage: mise run new <type>/<name>"
+set -euo pipefail
+
+branch="${1:-}"
+types="feat|fix|docs|test|refactor|perf|style|build|chore|ci"
+if [[ ! "$branch" =~ ^($types)/[a-z0-9][a-z0-9._-]*$ ]]; then
+  echo "Usage: mise run new <type>/<short-description>   e.g. mise run new feat/python-two-sum" >&2
+  echo "Allowed types: ${types//|/, }. Use lowercase letters, digits, dots, dashes or underscores." >&2
+  exit 2
+fi
+if [[ -n "$(git status --porcelain)" ]]; then
+  echo "You have uncommitted changes. Commit or stash them first (git status)." >&2
+  exit 1
+fi
+
+git switch main
+git pull --ff-only
+git switch -c "$branch"
