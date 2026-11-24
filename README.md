@@ -12,3 +12,7 @@ My solutions to the [NeetCode 150](https://neetcode.io/practice), each with test
 uv sync
 uv run pytest
 ```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for commit conventions and workflow.
