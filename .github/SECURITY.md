@@ -17,6 +17,7 @@ credentials are especially welcome.
 ## Security measures in place
 
 - Secret scanning with push protection: pushes that contain credentials are blocked.
+- Code scanning with CodeQL on every push and pull request.
 - Dependabot alerts and automatic security updates for dependencies and GitHub Actions.
 - Signed commits are required on `main`, and every change goes through a pull request.
 - GitHub Actions runs with read-only permissions, and workflows from external contributors
