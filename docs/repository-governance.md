@@ -43,7 +43,7 @@ Requirements: `gh` authenticated as a repository admin, and `jq`.
 | Pull request required | Every change reaches `main` through a pull request |
 | Required approvals: 0 | GitHub does not allow approving your own pull requests; the author reviews the diff before merging |
 | Squash merge only | Each pull request becomes a single commit; the PR title becomes its message |
-| Required status check | `Lint & test (Python)` must pass |
+| Required status checks | `Lint & test (Python)` and `Conventional PR title` must pass |
 | Code scanning results | CodeQL must report no errors and no high or critical security alerts |
 | Up-to-date branches | The branch must contain the latest `main` before merging |
 | Resolved conversations | All review comments must be resolved |
@@ -68,14 +68,16 @@ Checks run twice: locally before each commit, and in CI on every push and pull r
 
 | Check | Local (pre-commit) | CI |
 |-------|:------------------:|:--:|
-| File checks (whitespace, end of file, YAML, TOML, JSON, merge conflicts, large files) | ✔ | |
+| File checks (whitespace, end of file, YAML, TOML, JSON, merge conflicts, large files) | ✔ | ✔ |
 | Ruff lint | ✔ | ✔ |
 | Ruff format | ✔ | ✔ |
 | pytest | ✔ | ✔ |
 | README progress dashboard | ✔ (regenerates it) | ✔ (fails if outdated) |
-| Conventional Commits message | ✔ | |
+| Conventional Commits | ✔ (each commit message) | ✔ (pull request title, which becomes the squash commit) |
 
 Local hooks use the tool versions pinned in `uv.lock`, so they always match CI.
+CI runs the same pre-commit hooks, so skipping them locally (`git commit --no-verify`) cannot get
+anything past CI.
 
 ## GitHub Actions hardening
 

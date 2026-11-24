@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#MISE description="Enable auto-merge (squash) for the current pull request and watch CI"
+set -euo pipefail
+
+if ! gh pr view --json number >/dev/null 2>&1; then
+  echo "No pull request for $(git branch --show-current). Open one with: mise run pr" >&2
+  exit 1
+fi
+
+gh pr merge --auto --squash --delete-branch
+echo "Auto-merge enabled. Waiting for checks to start..."
+sleep 10
+gh pr checks --watch
+echo "When the pull request is merged, run: mise run done"

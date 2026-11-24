@@ -70,7 +70,8 @@ uv run pytest
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for commit conventions, project structure and workflow.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for commit conventions and project structure, and
+[docs/workflow.md](docs/workflow.md) for the day-to-day workflow.
 
 ## Security
 

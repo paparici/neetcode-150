@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#MISE description="After a merge: switch to an up-to-date main and delete the merged branch"
+set -euo pipefail
+
+branch="$(git branch --show-current)"
+if [[ "$branch" != "main" ]]; then
+  state="$(gh pr view "$branch" --json state --jq .state 2>/dev/null || echo NONE)"
+  if [[ "$state" != "MERGED" ]]; then
+    echo "The pull request for $branch is not merged yet (state: $state). Nothing was deleted." >&2
+    exit 1
+  fi
+fi
+
+git switch main
+git pull --ff-only
+git fetch --prune --quiet
+if [[ "$branch" != "main" ]]; then
+  git branch -D "$branch"
+fi
+git log --oneline -3

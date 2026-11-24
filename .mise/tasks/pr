@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+#MISE description="Push the branch and open a pull request in the browser with the template. Usage: mise run pr [title]"
+set -euo pipefail
+
+branch="$(git branch --show-current)"
+if [[ "$branch" == "main" ]]; then
+  echo "You are on main. Create a branch first: mise run new <type>/<name>" >&2
+  exit 1
+fi
+if [[ -n "$(git status --porcelain)" ]]; then
+  echo "You have uncommitted changes. Commit them first (git status)." >&2
+  exit 1
+fi
+
+git fetch --quiet origin main
+commits="$(git rev-list --count origin/main..HEAD)"
+if [[ "$commits" == "0" ]]; then
+  echo "No commits on $branch compared to main. Nothing to open a pull request for." >&2
+  exit 1
+fi
+
+git push -u origin HEAD
+
+if gh pr view --json url --jq .url >/dev/null 2>&1; then
+  echo "A pull request already exists for $branch:"
+  gh pr view --json url --jq .url
+  exit 0
+fi
+
+# Default title: the commit message when there is a single commit. The title becomes the
+# squash commit message on main, so it must follow Conventional Commits.
+title="${1:-}"
+if [[ -z "$title" && "$commits" == "1" ]]; then
+  title="$(git log -1 --pretty=%s)"
+fi
+if [[ -z "$title" ]]; then
+  echo "This branch has $commits commits. Pass a Conventional Commits title:" >&2
+  echo '  mise run pr "feat(python/arrays-hashing): solve two sum (1)"' >&2
+  exit 2
+fi
+
+gh pr create --web --title "$title"
+echo "Fill in the template in the browser and create the pull request, then run: mise run ship"

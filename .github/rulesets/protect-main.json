@@ -45,6 +45,9 @@
         "required_status_checks": [
           {
             "context": "Lint & test (Python)"
+          },
+          {
+            "context": "Conventional PR title"
           }
         ]
       }
