@@ -1,0 +1,57 @@
+# Git hooks managed by pre-commit (https://pre-commit.com).
+# Hooks run in the order listed: file checks -> lint -> tests -> README dashboard.
+# Lint, tests and the dashboard use the project's own tools (versions pinned in uv.lock),
+# so they always match CI.
+#
+# Setup once per clone:  uv run pre-commit install
+# Run on every file:     uv run pre-commit run --all-files
+# Update hook versions:  uv run pre-commit autoupdate
+
+default_install_hook_types: [pre-commit, commit-msg]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-added-large-files
+
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: uv run ruff check --fix
+        language: system
+        types_or: [python, pyi]
+
+      - id: ruff-format
+        name: ruff format
+        entry: uv run ruff format
+        language: system
+        types_or: [python, pyi]
+
+      - id: pytest
+        name: pytest
+        entry: uv run pytest -q
+        language: system
+        pass_filenames: false
+        types: [python]
+
+      - id: update-readme-progress
+        name: update README progress dashboard
+        entry: uv run python scripts/update_readme.py
+        language: system
+        pass_filenames: false
+        files: ^(problems\.toml|README\.md|scripts/update_readme\.py|python/.*)$
+
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.5.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: [--strict, feat, fix, docs, test, refactor, perf, style, build, chore, ci]
